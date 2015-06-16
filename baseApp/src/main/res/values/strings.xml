@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TrendQ</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_snapshot_main">TrendQCapture</string>
+
+    <string name="title_activity_capture_preview">CapturePreview</string>
+    <string name="image">Image Preview</string>
+
+    <string name="title_activity_image_preview">ImagePreview</string>
+</resources>
