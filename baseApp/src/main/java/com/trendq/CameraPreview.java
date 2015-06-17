@@ -1,10 +1,12 @@
 package com.trendq;
 
 /**
+ * Preview class for presenting camera image preview surface
  * Created by smundra on 6/8/15.
  */
 
 import android.content.Context;
+import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -32,6 +34,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try {
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
+            mCamera.autoFocus(new Camera.AutoFocusCallback() {
+                @Override
+                public void onAutoFocus(boolean success, Camera camera) {
+                    Log.d(TAG, "AutoFocus done");
+                }
+            });
         } catch (IOException e) {
             Log.d(TAG, "Error setting camera preview: " + e.getMessage());
         }
@@ -52,7 +60,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         } catch (Exception e){
         }
 
-        // start preview with new settings
+        mHolder.setFixedSize(w, w);
+        mHolder.setFormat(PixelFormat.RGB_565);
+        mHolder.setKeepScreenOn(true);
+        //mHolder.setSizeFromLayout();
         try {
             mCamera.setPreviewDisplay(mHolder);
             mCamera.startPreview();
@@ -61,4 +72,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             Log.d(TAG, "Error starting camera preview: " + e.getMessage());
         }
     }
+
+
 }

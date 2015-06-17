@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.trendq.snapshot_main">
+    tools:context="com.trendq.SnapshotFragment">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
