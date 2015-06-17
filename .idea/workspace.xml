@@ -10,51 +10,10 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/baseApp/src/main/java/com/trendq/SnapshotMain.java" line="34" mnemonic="1" />
+    <bookmark url="file://$PROJECT_DIR$/baseApp/src/main/java/com/trendq/SnapshotMain.java" line="33" mnemonic="1" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="892d542e-67bd-4221-b17e-c109d1b9a696" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/res/drawable/ic_action_info.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/res/drawable-hdpi-v11/ic_action_info.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/res/drawable-hdpi-v9/ic_action_info.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/res/drawable-mdpi/ic_action_info.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/res/drawable-mdpi-v11/ic_action_info.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/res/drawable-mdpi-v9/ic_action_info.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/res/drawable-xhdpi/ic_action_info.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/res/drawable-xhdpi-v11/ic_action_info.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/res/drawable-xhdpi-v9/ic_action_info.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/res/drawable-xxhdpi/ic_action_info.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/res/drawable-xxhdpi-v11/ic_action_info.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/res/drawable-xxhdpi-v9/ic_action_info.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/java/com/trendq/util/AutoFitTextureView.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/java/com/trendq/SnapshotFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/java/com/trendq/TrendQMainActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/res/layout/activity_snapshot_fragment.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/res/layout/activity_trendq_main.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/res/menu/menu_snapshot.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/baseApp/src/main/res/menu/menu_trendq_main.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/appcompat_v7_22_1_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/support_annotations_22_1_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/support_v4_22_1_1.xml" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/baseApp/src/main/res/layout/activity_image_preview.xml" afterPath="$PROJECT_DIR$/baseApp/src/main/res/layout/activity_saved_image_preview.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/outputFileStates.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/outputFileStates.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/baseApp/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/baseApp/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/baseApp/src/main/java/com/trendq/CameraPreview.java" afterPath="$PROJECT_DIR$/baseApp/src/main/java/com/trendq/CameraPreview.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/baseApp/src/main/java/com/trendq/ImagePreview.java" afterPath="$PROJECT_DIR$/baseApp/src/main/java/com/trendq/ImagePreview.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/baseApp/src/main/java/com/trendq/SnapshotMain.java" afterPath="$PROJECT_DIR$/baseApp/src/main/java/com/trendq/SnapshotMain.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/baseApp/src/main/res/layout/activity_snapshot_main.xml" afterPath="$PROJECT_DIR$/baseApp/src/main/res/layout/activity_snapshot_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/baseApp/baseApp.iml" afterPath="$PROJECT_DIR$/baseApp/baseApp.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/baseApp/build.gradle" afterPath="$PROJECT_DIR$/baseApp/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/baseApp/src/main/res/menu/menu_main.xml" afterPath="$PROJECT_DIR$/baseApp/src/main/res/menu/menu_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/baseApp/src/main/res/menu/menu_snapshot_main.xml" afterPath="$PROJECT_DIR$/baseApp/src/main/res/menu/menu_snapshot_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/baseApp/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/baseApp/src/main/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/baseApp/src/main/res/values/styles.xml" afterPath="$PROJECT_DIR$/baseApp/src/main/res/values/styles.xml" />
+    <list default="true" id="892d542e-67bd-4221-b17e-c109d1b9a696" name="Default" comment="Partial Commit: Copying design from camera2basic">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="TrendQ.iws" />
@@ -89,7 +48,7 @@
         <entry file="file://$PROJECT_DIR$/baseApp/src/main/java/com/trendq/TrendQMainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="20" column="25" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="27" />
+              <caret line="21" column="25" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -98,11 +57,13 @@
       <file leaf-file-name="SnapshotFragment.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/baseApp/src/main/java/com/trendq/SnapshotFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.53351206">
-              <caret line="463" column="59" selection-start-line="463" selection-start-column="59" selection-end-line="463" selection-end-column="59" />
+            <state vertical-scroll-proportion="1.4182305">
+              <caret line="451" column="30" selection-start-line="451" selection-start-column="30" selection-end-line="451" selection-end-column="30" />
               <folding>
-                <element signature="e#17022#17023#0" expanded="true" />
-                <element signature="e#17049#17050#0" expanded="true" />
+                <element signature="e#4294#4576#0" expanded="true" />
+                <element signature="e#4575#4576#0" expanded="true" />
+                <element signature="e#17010#17011#0" expanded="true" />
+                <element signature="e#17037#17038#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -124,8 +85,10 @@
         <entry file="file://$PROJECT_DIR$/baseApp/src/main/java/com/trendq/SnapshotMain.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="42" column="26" selection-start-line="42" selection-start-column="26" selection-end-line="42" selection-end-column="26" />
-              <folding />
+              <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+              <folding>
+                <marker date="1434548782302" expanded="true" signature="28:635" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -134,7 +97,7 @@
         <entry file="file://$PROJECT_DIR$/baseApp/src/main/java/com/trendq/CameraPreview.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="37" column="34" selection-start-line="37" selection-start-column="34" selection-end-line="37" selection-end-column="34" />
+              <caret line="34" column="34" selection-start-line="34" selection-start-column="34" selection-end-line="34" selection-end-column="34" />
               <folding>
                 <element signature="imports" expanded="false" />
               </folding>
@@ -145,6 +108,11 @@
     </leaf>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="sumit-mundra &lt;wizofsumit@gmail.com&gt;" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleLocalSettings">
@@ -1066,8 +1034,8 @@
         <option value="$PROJECT_DIR$/baseApp/src/main/java/com/trendq/TrendQMainActivity.java" />
         <option value="$PROJECT_DIR$/baseApp/src/main/java/com/trendq/CameraPreview.java" />
         <option value="$PROJECT_DIR$/baseApp/src/main/java/com/trendq/SnapshotMain.java" />
-        <option value="$PROJECT_DIR$/baseApp/src/main/java/com/trendq/SnapshotFragment.java" />
         <option value="$PROJECT_DIR$/baseApp/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/baseApp/src/main/java/com/trendq/SnapshotFragment.java" />
       </list>
     </option>
   </component>
@@ -1098,7 +1066,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
+    <navigator proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -1109,166 +1077,10 @@
       <autoscrollFromSource />
       <sortByType />
     </navigator>
-    <panes>
-      <pane id="AndroidView">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TrendQ" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Gradle Scripts" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidBuildScriptsGroupNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TrendQ" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="baseApp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TrendQ" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TrendQ" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TrendQ" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TrendQ" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TrendQ" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TrendQ" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="baseApp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TrendQ" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TrendQ" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="baseApp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TrendQ" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TrendQ" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="baseApp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trendq" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TrendQ" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TrendQ" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="baseApp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TrendQ" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TrendQ" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Ignored.Files" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="android.sdk.path" value="$USER_HOME$/Android/Sdk" />
     <property name="recentsLimit" value="5" />
@@ -1291,7 +1103,7 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="e5374bda" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="Nexus_5_API_22" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Camera2Basic" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="SearchEverywhereHistoryKey" value="AMani&#9;FILE&#9;file:///home/smundra/AndroidStudioProjects/TrendQ/baseApp/src/main/AndroidManifest.xml&#10;Theme&#9;PSI&#9;JAVA://android.content.res.Resources.Theme&#10;build.&#9;FILE&#9;file:///home/smundra/AndroidStudioProjects/TrendQ/baseApp/build.gradle&#10;grad&#9;FILE&#9;file:///home/smundra/AndroidStudioProjects/TrendQ/build.gradle&#10;And&#9;FILE&#9;file:///home/smundra/AndroidStudioProjects/TrendQ/baseApp/src/main/AndroidManifest.xml&#10;ic_ac&#9;FILE&#9;file:///home/smundra/AndroidStudioProjects/TrendQ/baseApp/src/main/res/drawable-hdpi-v11/ic_action_info.png&#10;str&#9;FILE&#9;file:///home/smundra/AndroidStudioProjects/TrendQ/baseApp/src/main/res/values/strings.xml&#10;sna&#9;FILE&#9;file:///home/smundra/AndroidStudioProjects/TrendQ/baseApp/src/main/java/com/trendq/SnapshotMain.java&#10;mani&#9;FILE&#9;file:///home/smundra/AndroidStudioProjects/TrendQ/baseApp/src/main/AndroidManifest.xml&#10;ima&#9;FILE&#9;file:///home/smundra/AndroidStudioProjects/TrendQ/baseApp/src/main/java/com/trendq/ImagePreview.java" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
@@ -1518,6 +1330,13 @@
       <option name="number" value="Default" />
       <updated>1434434870067</updated>
     </task>
+    <task id="LOCAL-00001" summary="Partial Commit: Copying design from camera2basic">
+      <created>1434548889904</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1434548889904</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1595,6 +1414,14 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
+    <MESSAGE value="Partial Commit: Copying design from camera2basic" />
+    <option name="LAST_COMMIT_MESSAGE" value="Partial Commit: Copying design from camera2basic" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
@@ -1604,7 +1431,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="196" column="23" selection-start-line="196" selection-start-column="23" selection-end-line="196" selection-end-column="23" />
-          <folding />
+          <folding>
+            <marker date="1434548782302" expanded="true" signature="28:635" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1791,6 +1620,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.35532996">
           <caret line="16" column="49" selection-start-line="16" selection-start-column="49" selection-end-line="16" selection-end-column="49" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1923,7 +1753,7 @@
     <entry file="file://$PROJECT_DIR$/baseApp/src/main/java/com/trendq/TrendQMainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="25" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="27" />
+          <caret line="21" column="25" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="27" />
           <folding />
         </state>
       </provider>
@@ -1931,8 +1761,10 @@
     <entry file="file://$PROJECT_DIR$/baseApp/src/main/java/com/trendq/SnapshotMain.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="42" column="26" selection-start-line="42" selection-start-column="26" selection-end-line="42" selection-end-column="26" />
-          <folding />
+          <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+          <folding>
+            <marker date="1434548782302" expanded="true" signature="28:635" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1946,7 +1778,7 @@
     <entry file="file://$PROJECT_DIR$/baseApp/src/main/java/com/trendq/CameraPreview.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="37" column="34" selection-start-line="37" selection-start-column="34" selection-end-line="37" selection-end-column="34" />
+          <caret line="34" column="34" selection-start-line="34" selection-start-column="34" selection-end-line="34" selection-end-column="34" />
           <folding>
             <element signature="imports" expanded="false" />
           </folding>
@@ -1970,11 +1802,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/baseApp/src/main/java/com/trendq/SnapshotFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.53351206">
-          <caret line="463" column="59" selection-start-line="463" selection-start-column="59" selection-end-line="463" selection-end-column="59" />
+        <state vertical-scroll-proportion="1.4182305">
+          <caret line="451" column="30" selection-start-line="451" selection-start-column="30" selection-end-line="451" selection-end-column="30" />
           <folding>
-            <element signature="e#17022#17023#0" expanded="true" />
-            <element signature="e#17049#17050#0" expanded="true" />
+            <element signature="e#4294#4576#0" expanded="true" />
+            <element signature="e#4575#4576#0" expanded="true" />
+            <element signature="e#17010#17011#0" expanded="true" />
+            <element signature="e#17037#17038#0" expanded="true" />
           </folding>
         </state>
       </provider>
