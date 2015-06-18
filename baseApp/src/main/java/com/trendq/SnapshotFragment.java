@@ -1,36 +1,18 @@
-/*
- * Copyright 2014 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.trendq;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.media.Image;
-import android.media.ImageReader;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Message;
 import android.util.Log;
 import android.util.SparseIntArray;
@@ -39,88 +21,61 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Toast;
-
-import com.trendq.util.AutoFitTextureView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-public class SnapshotFragment extends Fragment implements View.OnClickListener {
+public class SnapshotFragment extends Fragment implements View.OnClickListener{
 
-    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    protected static final String IMAGE_NAME = "trendq.image_preview";
+    Intent imagePreviewIntent;
     private static final String TAG = "TrendQ.SnapshotFragment";
-    private static final int STATE_PREVIEW = 0;
-    private static final int STATE_WAITING_LOCK = 1;
-    private static final int STATE_WAITING_PRECAPTURE = 2;
-    private static final int STATE_WAITING_NON_PRECAPTURE = 3;
-    private static final int STATE_PICTURE_TAKEN = 4;
-
-    static {
-        ORIENTATIONS.append(Surface.ROTATION_0, 90);
-        ORIENTATIONS.append(Surface.ROTATION_90, 0);
-        ORIENTATIONS.append(Surface.ROTATION_180, 270);
-        ORIENTATIONS.append(Surface.ROTATION_270, 180);
-    }
 
     private Camera mCamera = null;
-    private CameraPreview mPreview = null;
+
     private Camera.Size mPreviewSize;
-    private int mCameraId = 0;
+
+    private int mCameraId =0;
 
     private AutoFitTextureView mTextureView;
 
-    private HandlerThread mBackgroundThread;
-
-    private Handler mBackgroundHandler;
-
-    private ImageReader mImageReader;
-
     private File mFile;
 
-    private final ImageReader.OnImageAvailableListener mOnImageAvailableListener
-            = new ImageReader.OnImageAvailableListener() {
-
-        @Override
-        public void onImageAvailable(ImageReader reader) {
-            mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
-        }
-
-    };
-
-    private int mState = STATE_PREVIEW;
-
     private Semaphore mCameraOpenCloseLock = new Semaphore(1);
-    /**
-     * {@link TextureView.SurfaceTextureListener} handles several lifecycle events on a
-     * {@link TextureView}.
-     */
+
     private final TextureView.SurfaceTextureListener mSurfaceTextureListener
             = new TextureView.SurfaceTextureListener() {
 
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture texture, int width, int height) {
+            Log.d(TAG,"Surface available");
+            mCameraOpenCloseLock.release();
             openCamera(width, height);
+            createCameraPreviewSession();
         }
 
         @Override
         public void onSurfaceTextureSizeChanged(SurfaceTexture texture, int width, int height) {
+            Log.d(TAG,"Surface size changed");
             configureTransform(width, height);
         }
 
         @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture texture) {
+            Log.d(TAG,"Surface destroyed");
+            closeCamera();
             return true;
         }
 
@@ -129,21 +84,20 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener {
         }
 
     };
-    /**
-     * A {@link Handler} for showing {@link Toast}s.
-     */
+
     private Handler mMessageHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             Activity activity = getActivity();
             if (activity != null) {
+                Log.d(TAG,"making toast");
                 Toast.makeText(activity, (String) msg.obj, Toast.LENGTH_SHORT).show();
             }
         }
     };
 
     /**
-     * Given {@code choices} of {@code Size}s supported by a camera, chooses the smallest one whose
+     * Given  choices of mPreviewSizes supported by a camera, chooses the smallest one whose
      * width and height are at least as large as the respective requested values, and whose aspect
      * ratio matches with the specified value.
      *
@@ -151,10 +105,11 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener {
      * @param width       The minimum desired width
      * @param height      The minimum desired height
      * @param aspectRatio The aspect ratio
-     * @return The optimal {@code Size}, or an arbitrary one if none were big enough
+     * @return The optimal mPreviewSize, or an arbitrary one if none were big enough
      */
     private static Camera.Size chooseOptimalSize(List<Camera.Size> choices, int width, int height, Camera.Size aspectRatio) {
         // Collect the supported resolutions that are at least as big as the preview Surface
+        Log.d(TAG,"choosing optimal size");
         List<Camera.Size> bigEnough = new ArrayList<Camera.Size>();
         int w = aspectRatio.width;
         int h = aspectRatio.height;
@@ -164,7 +119,6 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener {
                 bigEnough.add(option);
             }
         }
-
         // Pick the smallest of those, assuming we found any
         if (bigEnough.size() > 0) {
             return Collections.min(bigEnough, new CompareSizesByArea());
@@ -191,14 +145,7 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener {
         return c;
     }
 
-    /**
-     * Shows a {@link Toast} on the UI thread.
-     *
-     * @param text The message to show
-     */
     private void showToast(String text) {
-        // We show a Toast by sending request message to mMessageHandler. This makes sure that the
-        // Toast is shown on the UI thread.
         Message message = Message.obtain();
         message.obj = text;
         mMessageHandler.sendMessage(message);
@@ -225,20 +172,15 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mFile = new File(getActivity().getExternalFilesDir(null), "pic.jpg");
     }
 
     @Override
     public void onResume() {
+        Log.d(TAG, "onResume invoked");
         super.onResume();
-        startBackgroundThread();
-
-        // When the screen is turned off and turned back on, the SurfaceTexture is already
-        // available, and "onSurfaceTextureAvailable" will not be called. In that case, we can open
-        // a camera and start preview from here (otherwise, we wait until the surface is ready in
-        // the SurfaceTextureListener).
         if (mTextureView.isAvailable()) {
             openCamera(mTextureView.getWidth(), mTextureView.getHeight());
+            createCameraPreviewSession();
         } else {
             mTextureView.setSurfaceTextureListener(mSurfaceTextureListener);
         }
@@ -246,8 +188,8 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onPause() {
+        Log.d(TAG,"onPause invoked");
         closeCamera();
-        stopBackgroundThread();
         super.onPause();
     }
 
@@ -258,30 +200,23 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener {
      * @param height The height of available size for camera preview
      */
     private void setUpCameraOutputs(int width, int height) {
-        Activity activity = getActivity();
+        Log.d(TAG, "setting camera outputs");
         Camera.Parameters params = mCamera.getParameters();
         params.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         mCamera.setParameters(params);
         setCameraDisplayOrientation(mCameraId, mCamera);
-        // For still image captures, we use the largest available size.
 
         List<Camera.Size> list = params.getSupportedPictureSizes();
         Camera.Size largest = Collections.max(
                 list, new CompareSizesByArea());
-        mImageReader = ImageReader.newInstance(largest.width, largest.height,
-                ImageFormat.JPEG, /*maxImages*/2);
-        mImageReader.setOnImageAvailableListener(
-                mOnImageAvailableListener, mBackgroundHandler);
 
-        // Danger, W.R.! Attempting to use too large a preview size could  exceed the camera
-        // bus' bandwidth limitation, resulting in gorgeous previews but the storage of
-        // garbage capture data.
         mPreviewSize = chooseOptimalSize(params.getSupportedPreviewSizes(),
                 width, height, largest);
+        Log.d(TAG, "Size w:h is " + mPreviewSize.width + ":" + mPreviewSize.height);
 
-        // We fit the aspect ratio of TextureView to the size of preview we picked.
         int orientation = getResources().getConfiguration().orientation;
+        Log.d(TAG, "Orientation is " + orientation);
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             mTextureView.setAspectRatio(
                     mPreviewSize.width, mPreviewSize.height);
@@ -295,17 +230,19 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener {
      * Opens the camera specified by {@link SnapshotFragment#mCameraId}.
      */
     private void openCamera(int width, int height) {
-        setUpCameraOutputs(width, height);
-        configureTransform(width, height);
-        Activity activity = getActivity();
         try {
             if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
                 throw new RuntimeException("Time out waiting to lock camera opening.");
             }
+            Log.d(TAG,"lock acquired");
             mCamera = getCameraInstance(mCameraId);
         } catch (InterruptedException e) {
             throw new RuntimeException("Interrupted while trying to lock camera opening.", e);
+        }finally {
+            mCameraOpenCloseLock.release();
         }
+        setUpCameraOutputs(width, height);
+        configureTransform(width, height);
     }
 
     /**
@@ -317,10 +254,6 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener {
             if (null != mCamera) {
                 releaseCamera();
             }
-            if (null != mImageReader) {
-                mImageReader.close();
-                mImageReader = null;
-            }
         } catch (InterruptedException e) {
             throw new RuntimeException("Interrupted while trying to lock camera closing.", e);
         } finally {
@@ -329,94 +262,22 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * Starts a background thread and its {@link Handler}.
+     * Starts camera preview.
      */
-    private void startBackgroundThread() {
-        mBackgroundThread = new HandlerThread("CameraBackground");
-        mBackgroundThread.start();
-        mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
-    }
-
-    /**
-     * Stops the background thread and its {@link Handler}.
-     */
-    private void stopBackgroundThread() {
-        mBackgroundThread.quitSafely();
-        try {
-            mBackgroundThread.join();
-            mBackgroundThread = null;
-            mBackgroundHandler = null;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void createCameraPreviewSession() {
-        try {
-            SurfaceTexture texture = mTextureView.getSurfaceTexture();
-            assert texture != null;
-
-            // We configure the size of default buffer to be the size of camera preview we want.
-            texture.setDefaultBufferSize(mPreviewSize.width, mPreviewSize.height);
-
-            // This is the output Surface we need to start preview.
-            Surface surface = new Surface(texture);
-
-            // We set up a CaptureRequest.Builder with the output Surface.
-            mPreviewRequestBuilder
-                    = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-            mPreviewRequestBuilder.addTarget(surface);
-
-            // Here, we create a CameraCaptureSession for camera preview.
-            mCameraDevice.createCaptureSession(Arrays.asList(surface, mImageReader.getSurface()),
-                    new CameraCaptureSession.StateCallback() {
-
-                        @Override
-                        public void onConfigured(CameraCaptureSession cameraCaptureSession) {
-                            // The camera is already closed
-                            if (null == mCameraDevice) {
-                                return;
-                            }
-
-                            // When the session is ready, we start displaying the preview.
-                            mCaptureSession = cameraCaptureSession;
-                            try {
-                                // Auto focus should be continuous for camera preview.
-                                mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
-                                        CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-                                // Flash is automatically enabled when necessary.
-                                mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
-                                        CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
-
-                                // Finally, we start displaying the camera preview.
-                                mPreviewRequest = mPreviewRequestBuilder.build();
-                                mCaptureSession.setRepeatingRequest(mPreviewRequest,
-                                        mCaptureCallback, mBackgroundHandler);
-                            } catch (CameraAccessException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        @Override
-                        public void onConfigureFailed(CameraCaptureSession cameraCaptureSession) {
-                            showToast("Failed");
-                        }
-                    }, null
-            );
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
+        SurfaceTexture texture = mTextureView.getSurfaceTexture();
+        assert texture != null;
+        texture.setDefaultBufferSize(mPreviewSize.width, mPreviewSize.height);
+        try{
+            mCamera.setPreviewTexture(texture);
+            mCamera.startPreview();
+        }catch (IOException e){
+            Log.e(TAG, e.getMessage());
         }
     }
 
-    /**
-     * Configures the necessary {@link android.graphics.Matrix} transformation to `mTextureView`.
-     * This method should be called after the camera preview size is determined in
-     * setUpCameraOutputs and also the size of `mTextureView` is fixed.
-     *
-     * @param viewWidth  The width of `mTextureView`
-     * @param viewHeight The height of `mTextureView`
-     */
     private void configureTransform(int viewWidth, int viewHeight) {
+        Log.d(TAG,"inside configureTransform");
         Activity activity = getActivity();
         if (null == mTextureView || null == mPreviewSize || null == activity) {
             return;
@@ -437,54 +298,94 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener {
             matrix.postRotate(90 * (rotation - 2), centerX, centerY);
         }
         mTextureView.setTransform(matrix);
+        Log.d(TAG, "leaving configureTransform");
     }
 
-    /**
-     * Initiate a still image capture.
-     */
     private void takePicture() {
         lockFocus();
+        captureStillPicture();
+    }
+
+    private Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
+
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera) {
+
+            mFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
+            if (mFile == null) {
+                Log.d(TAG, "Error creating media file, check storage permissions: ");
+                return;
+            } else {
+                try {
+                    FileOutputStream fos = new FileOutputStream(mFile);
+                    fos.write(data);
+                    fos.close();
+                } catch (FileNotFoundException e) {
+                    Log.d(TAG, "File not found: " + e.getMessage());
+                } catch (IOException e) {
+                    Log.d(TAG, "Error accessing file: " + e.getMessage());
+                }
+            }
+            showToast("Saved: " + mFile.getName());
+            imagePreviewIntent.putExtra(IMAGE_NAME,
+                    Uri.fromFile(mFile).toString());
+            Log.d(TAG, "Launching image preview activity");
+            closeCamera();
+            startActivity(imagePreviewIntent);
+        }
+    };
+
+    private static File getOutputMediaFile(int type) {
+        String storageState = Environment.getExternalStorageState();
+        Log.d(TAG, "Storage State: " + storageState);
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "TrendQ");
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d(TAG, "failed to create directory");
+                return null;
+            }
+        }
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile;
+        if (type == MEDIA_TYPE_IMAGE) {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                    "IMG_" + timeStamp + ".jpg");
+            Log.d(TAG, "Media File Path is: " + mediaFile.getAbsolutePath());
+            return mediaFile;
+        } else {
+            return null;
+        }
+    }
+
+    private void captureStillPicture() {
+        final Activity activity = getActivity();
+        if (null == activity || null == mCamera) {
+            return;
+        }
+        mCamera.takePicture(null, null, mPictureCallback);
+        imagePreviewIntent = new Intent(getActivity(), ImagePreview.class);
+
     }
 
     /**
      * Lock the focus as the first step for a still image capture.
      */
     private void lockFocus() {
-        try {
-            // This is how to tell the camera to lock focus.
-            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
-                    CameraMetadata.CONTROL_AF_TRIGGER_START);
-            // Tell #mCaptureCallback to wait for the lock.
-            mState = STATE_WAITING_LOCK;
-            mCaptureSession.setRepeatingRequest(mPreviewRequestBuilder.build(), mCaptureCallback,
-                    mBackgroundHandler);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Run the precapture sequence for capturing a still image. This method should be called when we
-     * get a response in {@link #mCaptureCallback} from {@link #lockFocus()}.
-     */
-    private void runPrecaptureSequence() {
-        try {
-            // This is how to tell the camera to trigger.
-            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER,
-                    CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER_START);
-            // Tell #mCaptureCallback to wait for the precapture sequence to be set.
-            mState = STATE_WAITING_PRECAPTURE;
-            mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
-                    mBackgroundHandler);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
+        mCamera.autoFocus(new Camera.AutoFocusCallback() {
+            @Override
+            public void onAutoFocus(boolean b, Camera camera) {
+                Log.d(TAG,"Autofocus done");
+            }
+        });
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.picture: {
+                Log.d(TAG,"Click tracked, taking picture");
                 takePicture();
                 break;
             }
@@ -501,12 +402,10 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public int getRotation(Context context) {
-        return ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
-    }
-
     private void releaseCamera() {
         if (mCamera != null) {
+            Log.d(TAG,"camera released");
+            mCamera.stopPreview();
             mCamera.release();
             mCamera = null;
         }
@@ -545,60 +444,10 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener {
         camera.setDisplayOrientation(result);
     }
 
-    /**
-     * Saves a JPEG {@link Image} into the specified {@link File}.
-     */
-    private static class ImageSaver implements Runnable {
-
-        /**
-         * The JPEG image
-         */
-        private final Image mImage;
-        /**
-         * The file we save the image into.
-         */
-        private final File mFile;
-
-        public ImageSaver(Image image, File file) {
-            mImage = image;
-            mFile = file;
-        }
-
-        @Override
-        public void run() {
-            ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
-            byte[] bytes = new byte[buffer.remaining()];
-            buffer.get(bytes);
-            FileOutputStream output = null;
-            try {
-                output = new FileOutputStream(mFile);
-                output.write(bytes);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                mImage.close();
-                if (null != output) {
-                    try {
-                        output.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-
-    }
-
-    /**
-     * Compares two {@code Size}s based on their areas.
-     */
     static class CompareSizesByArea implements Comparator<Camera.Size> {
 
         @Override
         public int compare(Camera.Size lhs, Camera.Size rhs) {
-            // We cast here to ensure the multiplications won't overflow
             return Long.signum((long) lhs.width * lhs.height -
                     (long) rhs.width * rhs.height);
         }

@@ -2,7 +2,11 @@ package com.trendq;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.widget.ImageView;
+
+import java.net.URI;
 
 
 /**
@@ -16,6 +20,9 @@ public class ImagePreview extends Activity {
 
         setContentView(R.layout.activity_saved_image_preview);
         Intent intent = getIntent();
-        intent.getStringExtra(SnapshotMain.IMAGENAME);
+        Uri uri = Uri.parse(intent.getStringExtra(SnapshotFragment.IMAGE_NAME));
+        ImageView imageView = (ImageView)findViewById(R.id.image_preview);
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        imageView.setImageURI(uri);
     }
 }

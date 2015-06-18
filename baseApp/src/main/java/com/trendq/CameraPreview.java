@@ -1,9 +1,12 @@
+/*
 package com.trendq;
 
+*/
 /**
  * Preview class for presenting camera image preview surface
  * Created by smundra on 6/8/15.
- */
+ *//*
+
 
 import android.content.Context;
 import android.graphics.PixelFormat;
@@ -14,7 +17,9 @@ import android.view.SurfaceView;
 
 import java.io.IOException;
 
-/** A basic Camera preview class */
+*/
+/** A basic Camera preview class *//*
+
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private static final String TAG = "TrendQ.CameraPreview";
     private SurfaceHolder mHolder;
@@ -75,3 +80,4 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
 
 }
+*/

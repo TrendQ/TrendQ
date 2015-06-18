@@ -1,3 +1,4 @@
+/*
 package com.trendq;
 
 import android.app.Activity;
@@ -22,49 +23,26 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+*/
 /**
  * Main launcher class
  *
  * @author smundra
- */
+ *//*
+
 public class SnapshotMain extends Activity implements TextureView.SurfaceTextureListener {
     public static final int MEDIA_TYPE_IMAGE = 1;
     protected static final String IMAGENAME = "trendq.image_preview";
     static final int REQUEST_TAKE_PHOTO = 1;
     private static final String TAG = "TrendQ.SnapshotMain";
     Intent imagePreview;
-    private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
 
-        @Override
-        public void onPictureTaken(byte[] data, Camera camera) {
 
-            File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
-            if (pictureFile == null) {
-                Log.d(TAG, "Error creating media file, check storage permissions: ");
-                return;
-            } else {
-                try {
-                    FileOutputStream fos = new FileOutputStream(pictureFile);
-                    fos.write(data);
-                    fos.close();
-                } catch (FileNotFoundException e) {
-                    Log.d(TAG, "File not found: " + e.getMessage());
-                } catch (IOException e) {
-                    Log.d(TAG, "Error accessing file: " + e.getMessage());
-                }
-            }
-            if (pictureFile != null) {
-                imagePreview.putExtra(IMAGENAME,
-                        Uri.fromFile(pictureFile));
-                Log.d(TAG, "Launching preview activity");
-                startActivity(imagePreview);
-            }
-        }
-    };
-
-    /**
+    */
+/**
      * Create a File for saving an image or video
-     */
+     *//*
+
     private static File getOutputMediaFile(int type) {
         String storageState = Environment.getExternalStorageState();
         Log.d(TAG, "Storage State: " + storageState);
@@ -98,10 +76,8 @@ public class SnapshotMain extends Activity implements TextureView.SurfaceTexture
         setContentView(R.layout.activity_snapshot_main);
         if(!checkCameraHardware(this))
             return;
-        mCamera = getCameraInstance();
+        //mCamera = getCameraInstance();
         if(mCamera!=null){
-
-
             Log.d(TAG,"Focus mode is "+params.getFocusMode());
             mPreview = new CameraPreview(this, mCamera);
             Log.d(TAG,"camera preview created");
@@ -121,7 +97,9 @@ public class SnapshotMain extends Activity implements TextureView.SurfaceTexture
         }
     }
 
-    /** Check if this device has a camera */
+    */
+/** Check if this device has a camera *//*
+
     private boolean checkCameraHardware(Context context) {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
             Log.d(TAG, "Camera found");
@@ -182,3 +160,4 @@ public class SnapshotMain extends Activity implements TextureView.SurfaceTexture
 
 
 }
+*/

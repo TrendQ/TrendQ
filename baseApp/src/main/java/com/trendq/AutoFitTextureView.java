@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.trendq.util;
+package com.trendq;
 
 import android.content.Context;
 import android.util.AttributeSet;
