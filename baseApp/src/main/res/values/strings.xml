@@ -1,18 +1,12 @@
 <resources>
     <string name="app_name">TrendQ</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_snapshot_main">TrendQCapture</string>
-
-    <string name="title_activity_capture_preview">CapturePreview</string>
     <string name="image">Image Preview</string>
 
-    <string name="title_activity_image_preview">ImagePreview</string>
-    <string name="title_activity_trend_qmain">TrendQCapture</string>
+    <string name="title_activity_image_preview">Preview</string>
+    <string name="title_activity_trend_qmain">TrendQ</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_snapshot_fragment">SnapshotFragment</string>
     <string name="picture">Picture</string>
     <string name="intro_message">Introduction</string>
     <string name="description_info">Info</string>
-
 </resources>

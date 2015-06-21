@@ -17,8 +17,12 @@
 package com.trendq;
 
 import android.content.Context;
+import android.nfc.Tag;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.TextureView;
+
+import java.awt.font.TextAttribute;
 
 /**
  * A {@link TextureView} that can be adjusted to a specified aspect ratio.
@@ -27,6 +31,7 @@ public class AutoFitTextureView extends TextureView {
 
     private int mRatioWidth = 0;
     private int mRatioHeight = 0;
+    private static final String TAG = "TrendQ.AFTV";
 
     public AutoFitTextureView(Context context) {
         this(context, null);
@@ -61,6 +66,7 @@ public class AutoFitTextureView extends TextureView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int width = MeasureSpec.getSize(widthMeasureSpec);
+        Log.d(TAG,"width:height "+MeasureSpec.getSize(widthMeasureSpec)+":"+MeasureSpec.getSize(heightMeasureSpec));
         int height = MeasureSpec.getSize(heightMeasureSpec);
         if (0 == mRatioWidth || 0 == mRatioHeight) {
             setMeasuredDimension(width, height);
@@ -72,5 +78,8 @@ public class AutoFitTextureView extends TextureView {
             }
         }
     }
+
+
+
 
 }

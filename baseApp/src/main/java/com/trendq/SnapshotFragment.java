@@ -13,9 +13,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Message;
+import android.provider.Settings;
 import android.util.Log;
-import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.TextureView;
@@ -27,6 +28,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +43,7 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener{
     public static final int MEDIA_TYPE_IMAGE = 1;
     protected static final String IMAGE_NAME = "trendq.image_preview";
     Intent imagePreviewIntent;
-    private static final String TAG = "TrendQ.SnapshotFragment";
+    private static final String TAG = "TrendQ.SF";
 
     private Camera mCamera = null;
 
@@ -53,23 +55,20 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener{
 
     private File mFile;
 
-    private Semaphore mCameraOpenCloseLock = new Semaphore(1);
-
     private final TextureView.SurfaceTextureListener mSurfaceTextureListener
             = new TextureView.SurfaceTextureListener() {
 
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture texture, int width, int height) {
-            Log.d(TAG,"Surface available");
-            mCameraOpenCloseLock.release();
+            Log.d(TAG,"Surface available: "+width+":"+height);
             openCamera(width, height);
-            createCameraPreviewSession();
+            if(mCamera!=null)createCameraPreviewSession();
         }
 
         @Override
         public void onSurfaceTextureSizeChanged(SurfaceTexture texture, int width, int height) {
-            Log.d(TAG,"Surface size changed");
-            configureTransform(width, height);
+            //Log.d(TAG,"Surface size changed");
+            //configureTransform(width, height);
         }
 
         @Override
@@ -108,8 +107,7 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener{
      * @return The optimal mPreviewSize, or an arbitrary one if none were big enough
      */
     private static Camera.Size chooseOptimalSize(List<Camera.Size> choices, int width, int height, Camera.Size aspectRatio) {
-        // Collect the supported resolutions that are at least as big as the preview Surface
-        Log.d(TAG,"choosing optimal size");
+        Log.d(TAG,"choosing optimal size from "+choices.size()+" choices");
         List<Camera.Size> bigEnough = new ArrayList<Camera.Size>();
         int w = aspectRatio.width;
         int h = aspectRatio.height;
@@ -180,7 +178,7 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener{
         super.onResume();
         if (mTextureView.isAvailable()) {
             openCamera(mTextureView.getWidth(), mTextureView.getHeight());
-            createCameraPreviewSession();
+            if(mCamera!=null)createCameraPreviewSession();
         } else {
             mTextureView.setSurfaceTextureListener(mSurfaceTextureListener);
         }
@@ -202,27 +200,73 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener{
     private void setUpCameraOutputs(int width, int height) {
         Log.d(TAG, "setting camera outputs");
         Camera.Parameters params = mCamera.getParameters();
+
         params.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
-        params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-        mCamera.setParameters(params);
+        params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+
+        if(params.isAutoExposureLockSupported()){
+            configureExposure(params);
+            mCamera.setParameters(params);
+        }
+
+        if(params.isAutoWhiteBalanceLockSupported()){
+            configureWhiteBalance(params);
+            mCamera.setParameters(params);
+        }
         setCameraDisplayOrientation(mCameraId, mCamera);
 
         List<Camera.Size> list = params.getSupportedPictureSizes();
-        Camera.Size largest = Collections.max(
-                list, new CompareSizesByArea());
 
-        mPreviewSize = chooseOptimalSize(params.getSupportedPreviewSizes(),
-                width, height, largest);
+//        Log.d(TAG, "supported pictures are:");
+//        printSizeList(params.getSupportedPictureSizes());
+
+        Camera.Size largest = Collections.max(
+                list, new CompareSizesByHeight());
+        Log.d(TAG, "largest supported picture size: " + largest.width + ":" + largest.height);
+
+        params.setPictureSize(largest.width, largest.height);
+        mCamera.setParameters(params);
+//        Log.d(TAG, "Supported preview sizes are: ");
+//        printSizeList(params.getSupportedPreviewSizes());
+
+        mPreviewSize = Collections.max(params.getSupportedPreviewSizes(), new CompareSizesByHeight());
         Log.d(TAG, "Size w:h is " + mPreviewSize.width + ":" + mPreviewSize.height);
 
+        params.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+        mCamera.setParameters(params);
         int orientation = getResources().getConfiguration().orientation;
         Log.d(TAG, "Orientation is " + orientation);
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            mTextureView.setAspectRatio(
-                    mPreviewSize.width, mPreviewSize.height);
-        } else {
-            mTextureView.setAspectRatio(
-                    mPreviewSize.height, mPreviewSize.width);
+
+        configureSquareAspectRatio();
+        mCamera.setParameters(params);
+
+    }
+
+    private void configureWhiteBalance(Camera.Parameters params) {
+        String whiteBalance = params.getWhiteBalance();
+        if(whiteBalance==null || Camera.Parameters.WHITE_BALANCE_AUTO.equalsIgnoreCase(whiteBalance)){
+            params.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_AUTO);
+        }
+    }
+
+    private void configureExposure(Camera.Parameters params) {
+        boolean isLocked = params.getAutoExposureLock();
+        if(isLocked){
+            return;
+        }
+        params.setAutoWhiteBalanceLock(true);
+
+    }
+
+    private void configureSquareAspectRatio() {
+        mTextureView.setAspectRatio(
+                1,1);
+    }
+
+    private void printSizeList(List<Camera.Size> list) {
+        int i = 1;
+        for(Camera.Size size : list ) {
+            Log.d(TAG, "Preview option " + i + " " + size.width + ":" + size.height);
         }
     }
 
@@ -230,34 +274,20 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener{
      * Opens the camera specified by {@link SnapshotFragment#mCameraId}.
      */
     private void openCamera(int width, int height) {
-        try {
-            if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
-                throw new RuntimeException("Time out waiting to lock camera opening.");
-            }
-            Log.d(TAG,"lock acquired");
-            mCamera = getCameraInstance(mCameraId);
-        } catch (InterruptedException e) {
-            throw new RuntimeException("Interrupted while trying to lock camera opening.", e);
-        }finally {
-            mCameraOpenCloseLock.release();
+
+        mCamera = getCameraInstance(mCameraId);
+        if(mCamera!=null){
+            setUpCameraOutputs(width, height);
+            configureTransform(width, height);
         }
-        setUpCameraOutputs(width, height);
-        configureTransform(width, height);
     }
 
     /**
      * Closes the current {@link SnapshotFragment#mCamera}
      */
     private void closeCamera() {
-        try {
-            mCameraOpenCloseLock.acquire();
-            if (null != mCamera) {
-                releaseCamera();
-            }
-        } catch (InterruptedException e) {
-            throw new RuntimeException("Interrupted while trying to lock camera closing.", e);
-        } finally {
-            mCameraOpenCloseLock.release();
+        if (null != mCamera) {
+            releaseCamera();
         }
     }
 
@@ -267,7 +297,10 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener{
     private void createCameraPreviewSession() {
         SurfaceTexture texture = mTextureView.getSurfaceTexture();
         assert texture != null;
-        texture.setDefaultBufferSize(mPreviewSize.width, mPreviewSize.height);
+        //FIXME setting square aspect ratio
+        int less = mPreviewSize.width<mPreviewSize.height?mPreviewSize.width:mPreviewSize.height;
+        //texture.setDefaultBufferSize(less,less);
+        texture.setDefaultBufferSize(mPreviewSize.width,mPreviewSize.height);
         try{
             mCamera.setPreviewTexture(texture);
             mCamera.startPreview();
@@ -283,18 +316,22 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener{
             return;
         }
         int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+        Log.d(TAG,"activity rotation is "+rotation);
         Matrix matrix = new Matrix();
         RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
-        RectF bufferRect = new RectF(0, 0, mPreviewSize.height, mPreviewSize.width);
+        Log.d(TAG,"Screen view x:y are "+viewWidth+":"+viewHeight);
+        RectF bufferRect = new RectF(0, 0, mPreviewSize.width, mPreviewSize.height);
+        Log.d(TAG,"Preview x:y are "+mPreviewSize.width+":"+mPreviewSize.height);
         float centerX = viewRect.centerX();
         float centerY = viewRect.centerY();
         if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
             bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY());
-            matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
+            matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.CENTER);
+            //FIXME: Don't just scale, Scale and center the larger on to smaller.
             float scale = Math.max(
                     (float) viewHeight / mPreviewSize.height,
                     (float) viewWidth / mPreviewSize.width);
-            matrix.postScale(scale, scale, centerX, centerY);
+            //matrix.postScale(scale, scale, centerX, centerY);
             matrix.postRotate(90 * (rotation - 2), centerX, centerY);
         }
         mTextureView.setTransform(matrix);
@@ -302,7 +339,6 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener{
     }
 
     private void takePicture() {
-        lockFocus();
         captureStillPicture();
     }
 
@@ -312,19 +348,17 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener{
         public void onPictureTaken(byte[] data, Camera camera) {
 
             mFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
+            Thread imageSaverThread = new Thread(new ImageSaver(data, mFile));
             if (mFile == null) {
                 Log.d(TAG, "Error creating media file, check storage permissions: ");
                 return;
             } else {
-                try {
-                    FileOutputStream fos = new FileOutputStream(mFile);
-                    fos.write(data);
-                    fos.close();
-                } catch (FileNotFoundException e) {
-                    Log.d(TAG, "File not found: " + e.getMessage());
-                } catch (IOException e) {
-                    Log.d(TAG, "Error accessing file: " + e.getMessage());
-                }
+                imageSaverThread.start();
+            }
+            try{
+                imageSaverThread.join();
+            }catch (Exception e){
+                Log.e(TAG,e.getMessage());
             }
             showToast("Saved: " + mFile.getName());
             imagePreviewIntent.putExtra(IMAGE_NAME,
@@ -335,6 +369,46 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener{
         }
     };
 
+    private static class ImageSaver implements Runnable {
+
+        /**
+         * The JPEG image
+         */
+        private final byte[] mData;
+        /**
+         * The file we save the image into.
+         */
+        private final File mFile;
+
+        public ImageSaver(byte[] data, File file) {
+            mData = data;
+            mFile = file;
+        }
+
+        @Override
+        public void run() {
+            FileOutputStream output = null;
+            try {
+                output = new FileOutputStream(mFile);
+                output.write(mData);
+            } catch (FileNotFoundException e) {
+                Log.d(TAG, "File not found: " + e.getMessage());
+            } catch (IOException e) {
+                Log.d(TAG, "Error accessing file: " + e.getMessage());
+            } finally {
+                if (null != output) {
+                    try {
+                        output.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+
+
+    }
     private static File getOutputMediaFile(int type) {
         String storageState = Environment.getExternalStorageState();
         Log.d(TAG, "Storage State: " + storageState);
@@ -367,18 +441,6 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener{
         mCamera.takePicture(null, null, mPictureCallback);
         imagePreviewIntent = new Intent(getActivity(), ImagePreview.class);
 
-    }
-
-    /**
-     * Lock the focus as the first step for a still image capture.
-     */
-    private void lockFocus() {
-        mCamera.autoFocus(new Camera.AutoFocusCallback() {
-            @Override
-            public void onAutoFocus(boolean b, Camera camera) {
-                Log.d(TAG,"Autofocus done");
-            }
-        });
     }
 
     @Override
@@ -439,6 +501,7 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener{
             result = (info.orientation + degrees) % 360;
             result = (360 - result) % 360;  // compensate the mirror
         } else {  // back-facing
+            Log.d(TAG, "camera orientation is "+info.orientation);
             result = (info.orientation - degrees + 360) % 360;
         }
         camera.setDisplayOrientation(result);
@@ -450,6 +513,22 @@ public class SnapshotFragment extends Fragment implements View.OnClickListener{
         public int compare(Camera.Size lhs, Camera.Size rhs) {
             return Long.signum((long) lhs.width * lhs.height -
                     (long) rhs.width * rhs.height);
+        }
+    }
+
+    static class CompareSizesByWidth implements Comparator<Camera.Size> {
+
+        @Override
+        public int compare(Camera.Size lhs, Camera.Size rhs) {
+            return lhs.width-rhs.width;
+        }
+    }
+
+    static class CompareSizesByHeight implements Comparator<Camera.Size> {
+
+        @Override
+        public int compare(Camera.Size lhs, Camera.Size rhs) {
+            return lhs.height-rhs.height;
         }
     }
 }
