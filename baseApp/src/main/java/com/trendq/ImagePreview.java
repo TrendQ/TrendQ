@@ -6,8 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 
-import java.net.URI;
-
 
 /**
  * Activity responsible for Image Preview
@@ -22,7 +20,7 @@ public class ImagePreview extends Activity {
         Intent intent = getIntent();
         Uri uri = Uri.parse(intent.getStringExtra(SnapshotFragment.IMAGE_NAME));
         ImageView imageView = (ImageView)findViewById(R.id.image_preview);
-        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         imageView.setImageURI(uri);
     }
 }

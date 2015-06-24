@@ -17,12 +17,9 @@
 package com.trendq;
 
 import android.content.Context;
-import android.nfc.Tag;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.TextureView;
-
-import java.awt.font.TextAttribute;
 
 /**
  * A {@link TextureView} that can be adjusted to a specified aspect ratio.
@@ -78,8 +75,5 @@ public class AutoFitTextureView extends TextureView {
             }
         }
     }
-
-
-
 
 }
