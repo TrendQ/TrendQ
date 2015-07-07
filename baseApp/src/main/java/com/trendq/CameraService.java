@@ -47,8 +47,8 @@ public class CameraService {
 
         configureFlashMode();
         configureFocusMode();
-        configureExposure();
-        configureWhiteBalance();
+        //configureExposure();
+        //configureWhiteBalance();
 
         setCameraDisplayOrientation(mCameraId, mCamera, activity);
 
